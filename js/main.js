@@ -20,14 +20,19 @@ function init() {
 
   renderer = new THREE.WebGLRenderer();
   element = renderer.domElement;
+  element.setAttribute('id', 'canvas');
   container = document.getElementById('webglviewer');
   container.appendChild(element);
-
-  element.addEventListener('click', fullscreen, false);
 
   video = document.createElement('video');
   video.setAttribute('id', 'video');
   video.setAttribute('autoplay', true);
+  document.body.appendChild(video);
+
+  canvas = document.createElement('canvas');
+  canvas.width = video.clientWidth;
+  canvas.height = video.clientHeight;
+  context = canvas.getContext('2d');
 
   effect = new THREE.StereoEffect(renderer);
 
@@ -55,17 +60,10 @@ function init() {
   }
 
   function streamFound(stream) {
-    document.body.appendChild(video);
     video.src = URL.createObjectURL(stream);
     video.style.width = '100%';
     video.style.height = '100%';
     video.play();
-    canvas = document.createElement('canvas');
-    canvas.setAttribute('id', 'canvas');
-    canvas.width = video.clientWidth;
-    canvas.height = video.clientHeight;
-
-    context = canvas.getContext('2d');
     texture = new THREE.Texture(canvas);
     texture.context = context;
 
@@ -121,16 +119,9 @@ function update(dt) {
 
 function render(dt) {
   effect.render(scene, camera);
-}
 
-function fullscreen() {
-  if (container.requestFullscreen) {
-    container.requestFullscreen();
-  } else if (container.msRequestFullscreen) {
-    container.msRequestFullscreen();
-  } else if (container.mozRequestFullScreen) {
-    container.mozRequestFullScreen();
-  } else if (container.webkitRequestFullscreen) {
-    container.webkitRequestFullscreen();
-  }
+  // Copy to canvas so it can be tracked
+  var canvasToTrack = document.getElementById("canvasToTrack");
+  var canvasToTrackContext = canvasToTrack.getContext("2d");
+  canvasToTrackContext.drawImage(element, 0, 0, canvasToTrack.width, canvasToTrack.height);
 }
