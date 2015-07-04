@@ -119,9 +119,4 @@ function update(dt) {
 
 function render(dt) {
   effect.render(scene, camera);
-
-  // Copy to canvas so it can be tracked
-  var canvasToTrack = document.getElementById("canvasToTrack");
-  var canvasToTrackContext = canvasToTrack.getContext("2d");
-  canvasToTrackContext.drawImage(element, 0, 0, canvasToTrack.width, canvasToTrack.height);
 }

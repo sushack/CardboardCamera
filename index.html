@@ -6,6 +6,7 @@
       body {
         margin: 0px;
         overflow: hidden;
+        background: #fff;
       }
       video{
         position: absolute;
@@ -45,6 +46,40 @@
       .opacity {
         opacity: 0.2;
       }
+
+      .hide {
+        display: none;
+      }
+
+      #leftArrow {
+        position: absolute;
+        top:0;
+        left:0;
+        height: 100%;
+        width: 50%;
+        z-index: 999;
+        font-size: 80vh;
+        text-align: center;
+        color: lime;
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: FlipH;
+        -ms-filter: "FlipH";
+      }
+
+      #rightArrow {
+        position: absolute;
+        top:0;
+        right:0;
+        height: 100%;
+        width: 50%;
+        z-index: 999;
+        font-size: 80vh;
+        text-align: center;
+        color: lime;
+      }
     </style>
   </head>
   <body>
@@ -52,13 +87,15 @@
       <ul>
         <li><a id="toggleOpacility" href="#">Toggle Opacity</a></li>
         <li>
-          <label><input type="radio" name="role"> Controller</label>
-          <label><input type="radio" name="role"> Puppet</label>
+          <label><input type="radio" name="role" id="controllerRadio"> Controller</label>
+          <label><input type="radio" name="role" id="puppetRadio"> Puppet</label>
         </li>
       </ul>
     </div>
 
     <div id="webglviewer"></div>
+    <div id="leftArrow" class="opacity hide">➯</div>
+    <div id="rightArrow" class="opacity hide">➯</div>
 
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="js/third-party/threejs/three.js"></script>
@@ -67,8 +104,23 @@
     <script src="js/main.js"></script>
 
     <script>
+      var myRole;
+
       $('#toggleOpacility').on('click', function(){
         $('#webglviewer').toggleClass('opacity');
+      });
+
+      $('#puppetRadio').on('click', function(){
+        if($('#puppetRadio').is(':checked')){
+          $('#leftArrow,#rightArrow').removeClass('hide');
+          myRole = "puppet";
+        }
+      });
+      $('#controllerRadio').on('click', function(){
+        if($('#controllerRadio').is(':checked')){
+          $('#leftArrow,#rightArrow').addClass('hide');
+          myRole = "controller";
+        }
       });
     </script>
   </body>
