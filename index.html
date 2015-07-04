@@ -101,6 +101,7 @@
     <script src="js/third-party/threejs/three.js"></script>
     <script src="js/third-party/threejs/StereoEffect.js"></script>
     <script src="js/third-party/threejs/DeviceOrientationControls.js"></script>
+    <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
     <script src="js/main.js"></script>
 
     <script>
@@ -113,15 +114,39 @@
       $('#puppetRadio').on('click', function(){
         if($('#puppetRadio').is(':checked')){
           $('#leftArrow,#rightArrow').removeClass('hide');
-          myRole = "puppet";
+          myRole = 'puppet';
         }
       });
       $('#controllerRadio').on('click', function(){
         if($('#controllerRadio').is(':checked')){
           $('#leftArrow,#rightArrow').addClass('hide');
-          myRole = "controller";
+          myRole = 'controller';
         }
       });
+
+
+      var pusher = new Pusher('acf435c635f0d94a4870', {
+        encrypted: true,
+        authTransport: 'jsonp',
+        authEndpoint: 'http://185.10.202.250:5000/pusher/auth'
+      });
+      var channel = pusher.subscribe('private-puppetmaster');
+
+
+      channel.bind('move', function(data) {
+        if(myRole === 'puppet'){
+          if(data.message.indexOf('left') >= 0) {
+            $('#rightArrow').addClass('opacity');
+            $('#leftArrow').removeClass('opacity');
+          }else if(data.message.indexOf('right') >= 0) {
+            $('#leftArrow').addClass('opacity');
+            $('#rightArrow').removeClass('opacity');
+          }else if(data.message.indexOf('stop') >= 0) {
+            $('#leftArrow,#rightArrow').removeClass('opacity');
+          }
+        }
+      });
+
     </script>
   </body>
 </html>
