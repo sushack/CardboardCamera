@@ -35,53 +35,10 @@
   <body>
     <div id="webglviewer"></div>
 
-    <canvas id="canvasToTrack"></canvas>
-    <canvas id="overlay"></canvas>
-
-    <script src="js/third-party/tracking-min.js"></script>
     <script src="js/third-party/threejs/three.js"></script>
     <script src="js/third-party/threejs/StereoEffect.js"></script>
     <script src="js/third-party/threejs/DeviceOrientationControls.js"></script>
     <script src="js/main.js"></script>
 
-    <script>
-      var overlayCanvas = document.getElementById('overlay');
-      var overlayCanvasContext = overlayCanvas.getContext('2d');
-      var tracker = new tracking.ColorTracker(['yellow']);
-
-      function fullscreen() {
-        if (container.requestFullscreen && overlayCanvas.requestFullscreen) {
-          container.requestFullscreen();
-          overlayCanvas.requestFullscreen();
-        } else if (container.msRequestFullscreen && overlayCanvas.msRequestFullscreen) {
-          container.msRequestFullscreen();
-          overlayCanvas.msRequestFullscreen();
-        } else if (container.mozRequestFullScreen && overlayCanvas.mozRequestFullScreen) {
-          container.mozRequestFullScreen();
-          overlayCanvas.mozRequestFullScreen();
-        } else if (container.webkitRequestFullscreen && overlayCanvas.webkitRequestFullscreen) {
-          container.webkitRequestFullscreen();
-          overlayCanvas.webkitRequestFullscreen();
-        }
-      }
-
-      overlayCanvas.addEventListener('click', fullscreen, false);
-
-      tracker.on('track', function(event) {
-        overlayCanvasContext.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-        event.data.forEach(function(rect) {
-          if (rect.color === 'custom') {
-            rect.color = tracker.customColor;
-          }
-
-          overlayCanvasContext.fillStyle = rect.color;
-          overlayCanvasContext.fillRect(rect.x, rect.y, rect.width, rect.height);
-        });
-      });
-
-      setInterval(function(){
-        tracking.track('#canvasToTrack', tracker);
-      },100);
-    </script>
   </body>
 </html>
