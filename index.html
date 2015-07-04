@@ -20,17 +20,56 @@
         right: 0;
         top: 0;
         z-index: 100;
+      }
+      #menu {
+        position: fixed;
+        width: 100%;
+        height:50px;
+        background: hotpink;
+        z-index: 9999;
+      }
+
+      ul {
+        margin: 0;
+      }
+
+      ul li {
+        float: left;
+        display: block;
+        height: 50px;
+        font-size: 1.5em;
+        line-height: 2em;
+        margin-right:20px;
+      }
+
+      .opacity {
         opacity: 0.2;
       }
     </style>
   </head>
   <body>
+    <div id="menu">
+      <ul>
+        <li><a id="toggleOpacility" href="#">Toggle Opacity</a></li>
+        <li>
+          <label><input type="radio" name="role"> Controller</label>
+          <label><input type="radio" name="role"> Puppet</label>
+        </li>
+      </ul>
+    </div>
+
     <div id="webglviewer"></div>
 
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="js/third-party/threejs/three.js"></script>
     <script src="js/third-party/threejs/StereoEffect.js"></script>
     <script src="js/third-party/threejs/DeviceOrientationControls.js"></script>
     <script src="js/main.js"></script>
 
+    <script>
+      $('#toggleOpacility').on('click', function(){
+        $('#webglviewer').toggleClass('opacity');
+      });
+    </script>
   </body>
 </html>
